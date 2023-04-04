@@ -1,8 +1,10 @@
 // reproduced from https://github.com/sumn2u/string-comparison/blob/master/jscosine.js
 // https://sumn2u.medium.com/string-similarity-comparision-in-js-with-examples-4bae35f13968
 
+import {ComparisonStrategy} from "../atomic";
+
 interface StrMap {
- [key: string]: number
+    [key: string]: number
 }
 
 interface BoolMap {
@@ -13,7 +15,7 @@ interface BoolMap {
 function termFreqMap(str: string) {
     var words = str.split(' ');
     var termFreq: StrMap = {};
-    words.forEach(function(w) {
+    words.forEach(function (w) {
         termFreq[w] = (termFreq[w] || 0) + 1;
     });
     return termFreq;
@@ -53,7 +55,7 @@ function cosineSimilarity(vecA: number[], vecB: number[]) {
     return vecDotProduct(vecA, vecB) / (vecMagnitude(vecA) * vecMagnitude(vecB));
 }
 
-const calculateCosineSimilarity = function textCosineSimilarity(strA: string, strB: string) {
+export const calculateCosineSimilarity = (strA: string, strB: string) => {
     var termFreqA = termFreqMap(strA);
     var termFreqB = termFreqMap(strB);
 
@@ -67,4 +69,7 @@ const calculateCosineSimilarity = function textCosineSimilarity(strA: string, st
     return cosineSimilarity(termFreqVecA, termFreqVecB);
 }
 
-export default calculateCosineSimilarity;
+export const cosineStrategy: ComparisonStrategy = {
+    name: 'cosine',
+    strategy: (valA: string, valB: string) => calculateCosineSimilarity(valA, valB) * 100
+}

@@ -1,18 +1,13 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.stringSameness = exports.defaultStrCompareTransformFuncs = void 0;
-const cosineSimilarity_js_1 = __importDefault(require("./matchingStrategies/cosineSimilarity.js"));
-const levenSimilarity_js_1 = __importDefault(require("./matchingStrategies/levenSimilarity.js"));
-const string_similarity_1 = __importDefault(require("string-similarity"));
+exports.defaultStrCompareTransformFuncs = exports.defaultStrategies = exports.createStringSameness = exports.stringSameness = void 0;
+const matchingStrategies_1 = require("./matchingStrategies");
 const sentenceLengthWeight = (length) => {
     // thanks jordan :')
     // constants are black magic
     return (Math.log(length) / 0.20) - 5;
 };
-exports.defaultStrCompareTransformFuncs = [
+const defaultStrCompareTransformFuncs = [
     // lower case to remove case sensitivity
     (str) => str.toLocaleLowerCase(),
     // remove excess whitespace
@@ -22,33 +17,52 @@ exports.defaultStrCompareTransformFuncs = [
     // replace all instances of 2 or more whitespace with one whitespace
     (str) => str.replace(/\s{2,}|\n/g, " ")
 ];
+exports.defaultStrCompareTransformFuncs = defaultStrCompareTransformFuncs;
+const defaultStrategies = [
+    matchingStrategies_1.diceStrategy,
+    matchingStrategies_1.levenStrategy,
+    matchingStrategies_1.cosineStrategy
+];
+exports.defaultStrategies = defaultStrategies;
 const stringSameness = (valA, valB, options) => {
-    const { transforms = exports.defaultStrCompareTransformFuncs, } = options || {};
+    const { transforms = defaultStrCompareTransformFuncs, strategies = defaultStrategies, } = options || {};
     const cleanA = transforms.reduce((acc, curr) => curr(acc), valA);
     const cleanB = transforms.reduce((acc, curr) => curr(acc), valB);
     const shortest = cleanA.length > cleanB.length ? cleanB : cleanA;
-    // Dice's Coefficient
-    const dice = string_similarity_1.default.compareTwoStrings(cleanA, cleanB) * 100;
-    // Cosine similarity
-    const cosine = (0, cosineSimilarity_js_1.default)(cleanA, cleanB) * 100;
-    // Levenshtein distance
-    const ls = (0, levenSimilarity_js_1.default)(cleanA, cleanB);
-    const levenSimilarPercent = ls[1];
+    const stratResults = [];
+    for (const strat of strategies) {
+        if (strat.isValid !== undefined && !strat.isValid(cleanA, cleanB)) {
+            continue;
+        }
+        const res = strat.strategy(cleanA, cleanB);
+        const resObj = typeof res === 'number' ? { score: res } : res;
+        stratResults.push({
+            ...resObj,
+            name: strat.name
+        });
+    }
     // use shortest sentence for weight
     const weightScore = sentenceLengthWeight(shortest.length);
     // take average score
-    const highScore = (dice + cosine + levenSimilarPercent) / 3;
+    const highScore = stratResults.reduce((acc, curr) => acc + curr.score, 0) / stratResults.length;
     // weight score can be a max of 15
     const highScoreWeighted = highScore + Math.min(weightScore, 15);
+    const stratObj = stratResults.reduce((acc, curr) => {
+        const { name, score, ...rest } = curr;
+        acc[curr.name] = {
+            ...rest,
+            score,
+        };
+        return acc;
+    }, {});
     return {
-        scores: {
-            dice,
-            cosine,
-            leven: levenSimilarPercent
-        },
+        strategies: stratObj,
         highScore,
         highScoreWeighted,
     };
 };
 exports.stringSameness = stringSameness;
-exports.default = exports.stringSameness;
+const createStringSameness = (defaults) => {
+    return (valA, valB, options = {}) => stringSameness(valA, valB, { ...defaults, ...options });
+};
+exports.createStringSameness = createStringSameness;

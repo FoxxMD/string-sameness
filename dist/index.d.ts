@@ -1,15 +1,6 @@
-export declare const defaultStrCompareTransformFuncs: ((str: string) => string)[];
-export interface StringComparisonOptions {
-    transforms?: ((str: string) => string)[];
-}
-export interface StringSamenessResult {
-    scores: {
-        dice: number;
-        cosine: number;
-        leven: number;
-    };
-    highScore: number;
-    highScoreWeighted: number;
-}
-export declare const stringSameness: (valA: string, valB: string, options?: StringComparisonOptions) => StringSamenessResult;
-export default stringSameness;
+import { StringComparisonOptions, StringSamenessResult } from "./atomic";
+declare const defaultStrCompareTransformFuncs: ((str: string) => string)[];
+declare const defaultStrategies: import("./atomic").ComparisonStrategy[];
+declare const stringSameness: (valA: string, valB: string, options?: StringComparisonOptions) => StringSamenessResult;
+declare const createStringSameness: (defaults: StringComparisonOptions) => (valA: string, valB: string, options?: StringComparisonOptions) => StringSamenessResult;
+export { StringSamenessResult, StringComparisonOptions, stringSameness, createStringSameness, defaultStrategies, defaultStrCompareTransformFuncs };

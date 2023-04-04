@@ -1,13 +1,18 @@
-import calculateCosineSimilarity from "./matchingStrategies/cosineSimilarity.js";
-import levenSimilarity from "./matchingStrategies/levenSimilarity.js";
-import stringSimilarity from 'string-similarity';
+import {cosineStrategy, levenStrategy, diceStrategy} from "./matchingStrategies";
+import {
+    ComparisonStrategyResult,
+    NamedComparisonStrategyObjectResult,
+    StringComparisonOptions,
+    StringSamenessResult
+} from "./atomic";
+
 const sentenceLengthWeight = (length: number) => {
     // thanks jordan :')
     // constants are black magic
     return (Math.log(length) / 0.20) - 5;
 }
 
-export const defaultStrCompareTransformFuncs = [
+const defaultStrCompareTransformFuncs = [
     // lower case to remove case sensitivity
     (str: string) => str.toLocaleLowerCase(),
     // remove excess whitespace
@@ -18,25 +23,17 @@ export const defaultStrCompareTransformFuncs = [
     (str: string) => str.replace(/\s{2,}|\n/g, " ")
 ];
 
-export interface StringComparisonOptions {
-    transforms?: ((str: string) => string)[]
-}
+const defaultStrategies = [
+    diceStrategy,
+    levenStrategy,
+    cosineStrategy
+]
 
-export interface StringSamenessResult {
-    scores: {
-        dice: number
-        cosine: number
-        leven: number
-    },
-    highScore: number
-    highScoreWeighted: number
-}
-
-
-export const stringSameness = (valA: string, valB: string, options?: StringComparisonOptions): StringSamenessResult => {
+const stringSameness = (valA: string, valB: string, options?: StringComparisonOptions): StringSamenessResult => {
 
     const {
         transforms = defaultStrCompareTransformFuncs,
+        strategies = defaultStrategies,
     } = options || {};
 
     const cleanA = transforms.reduce((acc, curr) => curr(acc), valA);
@@ -44,30 +41,51 @@ export const stringSameness = (valA: string, valB: string, options?: StringCompa
 
     const shortest = cleanA.length > cleanB.length ? cleanB : cleanA;
 
-    // Dice's Coefficient
-    const dice = stringSimilarity.compareTwoStrings(cleanA, cleanB) * 100;
-    // Cosine similarity
-    const cosine = calculateCosineSimilarity(cleanA, cleanB) * 100;
-    // Levenshtein distance
-    const ls = levenSimilarity(cleanA, cleanB);
-    const levenSimilarPercent = ls[1];
+    const stratResults: NamedComparisonStrategyObjectResult[] = [];
+
+    for (const strat of strategies) {
+        if (strat.isValid !== undefined && !strat.isValid(cleanA, cleanB)) {
+            continue;
+        }
+        const res = strat.strategy(cleanA, cleanB);
+        const resObj = typeof res === 'number' ? {score: res} : res;
+        stratResults.push({
+            ...resObj,
+            name: strat.name
+        });
+    }
 
     // use shortest sentence for weight
     const weightScore = sentenceLengthWeight(shortest.length);
 
     // take average score
-    const highScore = (dice + cosine + levenSimilarPercent) / 3;
+    const highScore = stratResults.reduce((acc, curr) => acc + curr.score, 0) / stratResults.length;
     // weight score can be a max of 15
     const highScoreWeighted = highScore + Math.min(weightScore, 15);
+    const stratObj = stratResults.reduce((acc: { [key: string]: ComparisonStrategyResult }, curr) => {
+        const {name, score, ...rest} = curr;
+        acc[curr.name] = {
+            ...rest,
+            score,
+        };
+        return acc;
+    }, {});
     return {
-        scores: {
-            dice,
-            cosine,
-            leven: levenSimilarPercent
-        },
+        strategies: stratObj,
         highScore,
         highScoreWeighted,
     }
 }
 
-export default stringSameness;
+const createStringSameness = (defaults: StringComparisonOptions) => {
+    return (valA: string, valB: string, options: StringComparisonOptions = {}) => stringSameness(valA, valB, {...defaults, ...options});
+}
+
+export {
+    StringSamenessResult,
+    StringComparisonOptions,
+    stringSameness,
+    createStringSameness,
+    defaultStrategies,
+    defaultStrCompareTransformFuncs
+}

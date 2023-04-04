@@ -1,6 +1,7 @@
 import leven from "leven";
+import {ComparisonStrategy} from "../atomic";
 
-const levenSimilarity = (valA: string, valB: string) => {
+export const calculateLevenSimilarity = (valA: string, valB: string) => {
     let longer: string;
     let shorter: string;
     if (valA.length > valB.length) {
@@ -16,4 +17,15 @@ const levenSimilarity = (valA: string, valB: string) => {
     return [distance, 100 - diff];
 }
 
-export default levenSimilarity;
+const stratFunc = (valA: string, valB: string) => {
+    const res = calculateLevenSimilarity(valA, valB);
+    return {
+        distance: res[0],
+        score: res[1]
+    };
+}
+
+export const levenStrategy: ComparisonStrategy = {
+    name: 'leven',
+    strategy: stratFunc
+}
