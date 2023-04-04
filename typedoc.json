@@ -1,6 +1,6 @@
 {
   "$schema": "https://typedoc.org/schema.json",
-  "name": "FoxxMD Common Libs",
+  "name": "string-sameness Docs",
   "entryPoints": ["./src"],
   "sort": ["source-order"],
   "categorizeByGroup": false,
@@ -8,10 +8,7 @@
     "Functions": 1.5
   },
   "navigationLinks": {
-    "Docs": "https://github.com/foxxmd/common-libs",
-    "GitHub": "https://github.com/foxxmd/common-libs"
-  },
-  "sidebarLinks": {
-    "API": "https://typedoc.org/api"
+    "Docs": "http://foxxmd.github.io/string-sameness",
+    "GitHub": "https://github.com/foxxmd/string-sameness"
   }
 }
