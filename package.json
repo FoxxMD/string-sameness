@@ -1,6 +1,6 @@
 {
   "name": "@foxxmd/string-sameness",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "determine how closely the same two strings are",
   "repository": "https://github.com/foxxmd/string-sameness",
   "author": "FoxxMD",
@@ -31,7 +31,7 @@
     "typescript": "^4.9.5"
   },
   "dependencies": {
-    "leven": "^4.0.0",
+    "leven": "^3.0.0",
     "string-similarity": "^4.0.4"
   }
 }
