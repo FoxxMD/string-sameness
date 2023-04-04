@@ -4,5 +4,11 @@ import {ComparisonStrategy} from "../atomic";
 export const calculateDiceSimilarity = (valA: string, valB: string) => stringSimilarity.compareTwoStrings(valA, valB);
 export const diceStrategy: ComparisonStrategy = {
     name: 'dice',
-    strategy: (valA: string, valB: string) => stringSimilarity.compareTwoStrings(valA, valB) * 100
+    strategy: (valA: string, valB: string) => {
+        const res = calculateDiceSimilarity(valA, valB);
+        return {
+            score: res * 100,
+            rawScore: res
+        }
+    }
 }

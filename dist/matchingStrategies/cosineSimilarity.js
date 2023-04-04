@@ -53,5 +53,11 @@ const calculateCosineSimilarity = (strA, strB) => {
 exports.calculateCosineSimilarity = calculateCosineSimilarity;
 exports.cosineStrategy = {
     name: 'cosine',
-    strategy: (valA, valB) => (0, exports.calculateCosineSimilarity)(valA, valB) * 100
+    strategy: (valA, valB) => {
+        const res = (0, exports.calculateCosineSimilarity)(valA, valB);
+        return {
+            score: res * 100,
+            rawScore: res
+        };
+    }
 };

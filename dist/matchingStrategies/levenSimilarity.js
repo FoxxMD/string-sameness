@@ -24,6 +24,7 @@ exports.calculateLevenSimilarity = calculateLevenSimilarity;
 const stratFunc = (valA, valB) => {
     const res = (0, exports.calculateLevenSimilarity)(valA, valB);
     return {
+        rawScore: res[0],
         distance: res[0],
         score: res[1]
     };

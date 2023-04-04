@@ -9,5 +9,11 @@ const calculateDiceSimilarity = (valA, valB) => string_similarity_1.default.comp
 exports.calculateDiceSimilarity = calculateDiceSimilarity;
 exports.diceStrategy = {
     name: 'dice',
-    strategy: (valA, valB) => string_similarity_1.default.compareTwoStrings(valA, valB) * 100
+    strategy: (valA, valB) => {
+        const res = (0, exports.calculateDiceSimilarity)(valA, valB);
+        return {
+            score: res * 100,
+            rawScore: res
+        };
+    }
 };

@@ -20,22 +20,25 @@ import {stringSameness} from '@foxxmd/string-sameness';
 
 const result =  stringSameness('This is one sentence', 'This is another sentence');
 console.log(result);
-//{
-//    "strategies": {
-//        "dice": {
-//            "score": 66.66666666666666
-//        },
-//        "leven": {
-//            "distance": 5,
-//                "score": 79.16666666666666
-//        },
-//        "cosine": {
-//            "score": 75
-//        }
-//    },
-//    "highScore": 73.6111111111111,
-//    "highScoreWeighted": 83.58977247888106
-//}
+// {
+//     "strategies": {
+//         "dice": {
+//             "rawScore": 0.6666,
+//             "score": 66.66
+//         },
+//         "leven": {
+//             "rawScore": 5,
+//             "distance": 5,
+//             "score": 79.16
+//         },
+//         "cosine": {
+//             "rawScore": 0.75,
+//             "score": 75
+//         }
+//     },
+//     "highScore": 73.61,
+//     "highScoreWeighted": 83.58
+// }
 ```
 
 # Options

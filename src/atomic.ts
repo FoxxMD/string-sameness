@@ -12,7 +12,14 @@ export interface StringSamenessResult {
 }
 
 export interface ComparisonStrategyResultObject {
+    /**
+     * The normalized (0 to 100) score of this comparison
+     * */
     score: number
+    /**
+     * The raw value returned by the comparison (not normalized)
+     * */
+    rawScore?: number
 
     [key: string]: any
 }
@@ -41,7 +48,7 @@ export interface ComparisonStrategy {
     strategy: StrategyFunc
 
     /**
-     * An optional function that accepts to string arguments and returns whether this strategy should be used
+     * An optional function that accepts two string arguments and returns whether this strategy should be used
      * */
     isValid?: (strA: string, strB: string) => boolean
 }
