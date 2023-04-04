@@ -1,0 +1,37 @@
+{
+  "name": "@foxxmd/string-sameness",
+  "version": "0.1.0",
+  "description": "determine how closely the same two strings are",
+  "repository": "https://github.com/foxxmd/string-sameness",
+  "author": "FoxxMD",
+  "license": "MIT",
+  "private": false,
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.3.0"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "/dist"
+  ],
+  "scripts": {
+    "typedoc": "typedoc",
+    "build": "tsc"
+  },
+  "exports": {
+    ".": "./dist/index.js",
+    "./strategies/cosine": "./dist/cosineSimilarity.js",
+    "./strategies/leven": "./dist/levenSimilarity.js"
+  },
+  "devDependencies": {
+    "@tsconfig/node16": "^1.0.3",
+    "@types/string-similarity": "^4.0.0",
+    "typedoc": "^0.23.28",
+    "typescript": "^4.9.5"
+  },
+  "dependencies": {
+    "leven": "^4.0.0",
+    "string-similarity": "^4.0.4"
+  }
+}
