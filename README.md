@@ -20,9 +20,9 @@ npm install @foxxmd/string-sameness
 ```
 
 ```js
-import compare from '@foxxmd/string-sameness';
+import {stringSameness} from '@foxxmd/string-sameness';
 
-const result =  compare('This is one sentence', 'This is another sentence');
+const result =  stringSameness('This is one sentence', 'This is another sentence');
 console.log(result);
 // {
 //     "scores": {
@@ -37,7 +37,7 @@ console.log(result);
 
 ### Normalization
 
-A third argument may be passed to `compare` to provide a list of functions to apply to the strings to compare. When not explicitly provided a default set of functions is applied to normalize the strings (to remove trivial differences):
+A third argument may be passed to `stringSameness` to provide a list of functions to apply to the strings to compare. When not explicitly provided a default set of functions is applied to normalize the strings (to remove trivial differences):
 
 * convert to lowercase
 * trim (remove whitespace at beginning/end)
@@ -49,7 +49,7 @@ This default set of functions is exported as `defaultStrCompareTransformFuncs`.
 Example of supplying your own transform functions:
 
 ```js
-import compare, {defaultStrCompareTransformFuncs} from '@foxxmd/string-sameness';
+import {stringSameness, defaultStrCompareTransformFuncs} from '@foxxmd/string-sameness';
 
 const myFuncs = [
     ...defaultStrCompareTransformFuncs,
@@ -57,5 +57,5 @@ const myFuncs = [
     (str) => str.replace(/[aeiou]/ig, 'e')
 ]
 
-const result =  compare('This is one sentence', 'This is another sentence', myFuncs);
+const result =  stringSameness('This is one sentence', 'This is another sentence', myFuncs);
 ```
