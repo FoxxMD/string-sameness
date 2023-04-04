@@ -16,7 +16,7 @@ The sameness is then given a **score of 0 to 100.**
 ## Install/Usage
 
 ```
-npm install @foxxmd/string-samness
+npm install @foxxmd/string-sameness
 ```
 
 ```js
