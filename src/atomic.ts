@@ -1,5 +1,5 @@
 export interface StringComparisonOptions {
-    transforms?: ((str: string) => string)[]
+    transforms?: StringTransformFunc[]
     strategies?: ComparisonStrategy<ComparisonStrategyResultValue>[]
 }
 
@@ -52,3 +52,5 @@ export interface ComparisonStrategy<T extends ComparisonStrategyResultValue> {
      * */
     isValid?: (strA: string, strB: string) => boolean
 }
+
+export type StringTransformFunc = (str: string) => string;

@@ -11,7 +11,11 @@ export const calculateLevenSimilarity = (valA, valB) => {
         shorter = valA;
     }
     const distance = leven(longer, shorter);
-    const diff = (distance / longer.length) * 100;
+    // use the shorter length
+    // because if we have more move/change operations than the length of the shortest string than we have two unique strings
+    // and if we use the longer length the score actually gets *better* as the length gap gets larger (not what we want)
+    // -- cap at 100% diff
+    const diff = Math.min((distance / shorter.length) * 100, 100);
     return [distance, 100 - diff];
 };
 const stratFunc = (valA, valB) => {
@@ -26,3 +30,4 @@ export const levenStrategy = {
     name: 'leven',
     strategy: stratFunc
 };
+//# sourceMappingURL=levenSimilarity.js.map

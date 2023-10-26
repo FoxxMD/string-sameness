@@ -1,23 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.defaultStrCompareTransformFuncs = exports.strategies = exports.defaultStrategies = exports.createStringSameness = exports.stringSameness = void 0;
+exports.strDefaultTransforms = exports.defaultStrCompareTransformFuncs = exports.transforms = exports.strategies = exports.defaultStrategies = exports.createStringSameness = exports.stringSameness = void 0;
 const index_js_1 = require("./matchingStrategies/index.js");
+const index_js_2 = require("./normalization/index.js");
+Object.defineProperty(exports, "strDefaultTransforms", { enumerable: true, get: function () { return index_js_2.strDefaultTransforms; } });
+Object.defineProperty(exports, "transforms", { enumerable: true, get: function () { return index_js_2.transforms; } });
 const sentenceLengthWeight = (length) => {
     // thanks jordan :')
     // constants are black magic
     return (Math.log(length) / 0.20) - 5;
 };
-const defaultStrCompareTransformFuncs = [
-    // lower case to remove case sensitivity
-    (str) => str.toLocaleLowerCase(),
-    // remove excess whitespace
-    (str) => str.trim(),
-    // remove non-alphanumeric characters so that differences in punctuation don't subtract from comparison score
-    (str) => str.replace(/[^A-Za-z0-9 ]/g, ""),
-    // replace all instances of 2 or more whitespace with one whitespace
-    (str) => str.replace(/\s{2,}|\n/g, " ")
-];
-exports.defaultStrCompareTransformFuncs = defaultStrCompareTransformFuncs;
 const defaultStrategies = [
     index_js_1.diceStrategy,
     index_js_1.levenStrategy,
@@ -25,7 +17,7 @@ const defaultStrategies = [
 ];
 exports.defaultStrategies = defaultStrategies;
 const stringSameness = (valA, valB, options) => {
-    const { transforms = defaultStrCompareTransformFuncs, strategies = defaultStrategies, } = options || {};
+    const { transforms = index_js_2.strDefaultTransforms, strategies = defaultStrategies, } = options || {};
     const cleanA = transforms.reduce((acc, curr) => curr(acc), valA);
     const cleanB = transforms.reduce((acc, curr) => curr(acc), valB);
     const shortest = cleanA.length > cleanB.length ? cleanB : cleanA;
@@ -69,6 +61,11 @@ exports.createStringSameness = createStringSameness;
 const strategies = {
     diceStrategy: index_js_1.diceStrategy,
     levenStrategy: index_js_1.levenStrategy,
-    cosineStrategy: index_js_1.cosineStrategy
+    cosineStrategy: index_js_1.cosineStrategy,
+    cosineStrategyAggressive: index_js_1.cosineStrategyAggressive
 };
 exports.strategies = strategies;
+// maintaining compatibility
+const defaultStrCompareTransformFuncs = index_js_2.strDefaultTransforms;
+exports.defaultStrCompareTransformFuncs = defaultStrCompareTransformFuncs;
+//# sourceMappingURL=index.js.map

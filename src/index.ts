@@ -3,25 +3,16 @@ import {
     ComparisonStrategyResult,
     NamedComparisonStrategyObjectResult,
     StringComparisonOptions,
-    StringSamenessResult
+    StringSamenessResult,
+    StringTransformFunc
 } from "./atomic.js";
+import {strDefaultTransforms, transforms} from "./normalization/index.js";
 
 const sentenceLengthWeight = (length: number) => {
     // thanks jordan :')
     // constants are black magic
     return (Math.log(length) / 0.20) - 5;
 }
-
-const defaultStrCompareTransformFuncs = [
-    // lower case to remove case sensitivity
-    (str: string) => str.toLocaleLowerCase(),
-    // remove excess whitespace
-    (str: string) => str.trim(),
-    // remove non-alphanumeric characters so that differences in punctuation don't subtract from comparison score
-    (str: string) => str.replace(/[^A-Za-z0-9 ]/g, ""),
-    // replace all instances of 2 or more whitespace with one whitespace
-    (str: string) => str.replace(/\s{2,}|\n/g, " ")
-];
 
 const defaultStrategies = [
     diceStrategy,
@@ -32,7 +23,7 @@ const defaultStrategies = [
 const stringSameness = (valA: string, valB: string, options?: StringComparisonOptions): StringSamenessResult => {
 
     const {
-        transforms = defaultStrCompareTransformFuncs,
+        transforms = strDefaultTransforms,
         strategies = defaultStrategies,
     } = options || {};
 
@@ -88,6 +79,9 @@ const strategies = {
     cosineStrategyAggressive
 };
 
+// maintaining compatibility
+const defaultStrCompareTransformFuncs = strDefaultTransforms;
+
 export {
     StringSamenessResult,
     StringComparisonOptions,
@@ -95,6 +89,9 @@ export {
     createStringSameness,
     defaultStrategies,
     strategies,
+    transforms,
     defaultStrCompareTransformFuncs,
-    ComparisonStrategyResult
+    strDefaultTransforms,
+    ComparisonStrategyResult,
+    StringTransformFunc
 }

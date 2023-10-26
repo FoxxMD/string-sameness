@@ -16,33 +16,43 @@ describe('String normalization', function() {
     it('should normalize punctuation', async function () {
 
         const valA = 'this string! is the. same';
-        const valB = 'this string is the same';
 
-        assert.equal(normalizeStr(valA), normalizeStr(valB))
+        assert.equal(normalizeStr(valA), sameString)
     });
 
     it('should normalize whitespace', async function () {
 
         const valA = 'this string   is the   same   ';
-        const valB = 'this string is the same';
 
-        assert.equal(normalizeStr(valA), normalizeStr(valB))
+        assert.equal(normalizeStr(valA), sameString)
     });
 
     it('should normalize whitespace at end and beginning', async function () {
 
         const valA = ' this string is the same ';
-        const valB = 'this string is the same';
 
-        assert.equal(normalizeStr(valA), normalizeStr(valB))
+        assert.equal(normalizeStr(valA), sameString)
     });
 
     it('should normalize case', async function () {
 
         const valA = 'ThIs STRING iS THe SAMe';
-        const valB = 'this string is the same';
 
-        assert.equal(normalizeStr(valA), normalizeStr(valB))
+        assert.equal(normalizeStr(valA), sameString)
+    });
+
+    it('should normalize unicode', async function () {
+
+        const tests = [
+            ['enamorate bailando','Enamórate Bailando'],
+            ['dina ogon', 'Dina Ögon'],
+            ['nana', 'Nanã'],
+            ['nana', 'Nanä']
+        ]
+
+        for(const test of tests) {
+            assert.equal(normalizeStr(test[1]), test[0])
+        }
     });
 });
 

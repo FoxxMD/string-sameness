@@ -1,4 +1,5 @@
 import { levenStrategy } from "./levenSimilarity.js";
-import { cosineStrategy } from "./cosineSimilarity.js";
+import { cosineStrategy, cosineStrategyAggressive } from "./cosineSimilarity.js";
 import { diceStrategy } from "./diceSimilarity.js";
-export { levenStrategy, cosineStrategy, diceStrategy };
+export { levenStrategy, cosineStrategy, cosineStrategyAggressive, diceStrategy };
+//# sourceMappingURL=index.js.map

@@ -1,7 +1,11 @@
 {
   "$schema": "https://typedoc.org/schema.json",
   "name": "string-sameness Docs",
-  "entryPoints": ["./src","./src/matchingStrategies/index.ts"],
+  "entryPoints": [
+    "./src",
+    "./src/matchingStrategies/index.ts",
+    "./src/normalization/index.ts"
+  ],
   "sort": ["source-order"],
   "categorizeByGroup": false,
   "searchGroupBoosts": {
