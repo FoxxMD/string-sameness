@@ -50,18 +50,27 @@ describe('Strategies', function() {
 
     describe('Sanity Checks', function() {
 
-        describe('scores identical when strings are identical', function() {
+        describe('scores 100 when strings are identical', function() {
             for(const [name, strat] of Object.entries(strategies)) {
                 it(`${name}: strings are identical`, function() {
                     const res = strat.strategy(sameString, sameString);
-                    assert.equal(100, res.score);
+                    assert.equal(res.score, 100);
+                });
+            }
+        });
+
+        describe('scores not 100 when strings are close but not identical', function() {
+            for(const [name, strat] of Object.entries(strategies)) {
+                it(`${name}: strings are close but not identical`, function() {
+                    const res = strat.strategy('Another Brick in the Wall, Pt. 1', 'Another Brick in the Wall, Pt. 2');
+                    assert.isAtMost(res.score, 99);
                 });
             }
         });
 
         describe('scores near zero when strings are completely different', function() {
             for(const [name, strat] of Object.entries(strategies)) {
-                it(`${name}: string are completely different`, function() {
+                it(`${name}: strings are completely different`, function() {
                     const res = strat.strategy(sameString, 'pay bull blood for voice');
                     assert.isAtMost(res.score, 10);
                 });
