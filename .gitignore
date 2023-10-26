@@ -1,5 +1,7 @@
 **/src/**/*.map
 **/src/**/*.js
+**/src/**/*.d.ts
 node_modules/
 /.idea
 /docs
+.tshy

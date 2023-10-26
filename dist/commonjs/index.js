@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.defaultStrCompareTransformFuncs = exports.defaultStrategies = exports.createStringSameness = exports.stringSameness = void 0;
-const matchingStrategies_1 = require("./matchingStrategies");
+exports.defaultStrCompareTransformFuncs = exports.strategies = exports.defaultStrategies = exports.createStringSameness = exports.stringSameness = void 0;
+const index_js_1 = require("./matchingStrategies/index.js");
 const sentenceLengthWeight = (length) => {
     // thanks jordan :')
     // constants are black magic
@@ -19,9 +19,9 @@ const defaultStrCompareTransformFuncs = [
 ];
 exports.defaultStrCompareTransformFuncs = defaultStrCompareTransformFuncs;
 const defaultStrategies = [
-    matchingStrategies_1.diceStrategy,
-    matchingStrategies_1.levenStrategy,
-    matchingStrategies_1.cosineStrategy
+    index_js_1.diceStrategy,
+    index_js_1.levenStrategy,
+    index_js_1.cosineStrategy
 ];
 exports.defaultStrategies = defaultStrategies;
 const stringSameness = (valA, valB, options) => {
@@ -66,3 +66,9 @@ const createStringSameness = (defaults) => {
     return (valA, valB, options = {}) => stringSameness(valA, valB, { ...defaults, ...options });
 };
 exports.createStringSameness = createStringSameness;
+const strategies = {
+    diceStrategy: index_js_1.diceStrategy,
+    levenStrategy: index_js_1.levenStrategy,
+    cosineStrategy: index_js_1.cosineStrategy
+};
+exports.strategies = strategies;

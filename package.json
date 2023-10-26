@@ -10,30 +10,45 @@
     "node": ">=18.0.0",
     "npm": ">=9.3.0"
   },
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "./dist/commonjs/index.js",
+  "types": "./dist/commonjs/index.d.ts",
   "files": [
-    "/dist"
+    "dist"
   ],
   "scripts": {
     "typedoc": "typedoc",
-    "build": "tsc"
+    "build": "tsc",
+    "prepare": "tshy"
   },
   "exports": {
-    ".": "./dist/index.js",
-    "./strategies": "./dist/matchingStrategies/index.js",
-    "./strategies/cosine": "./dist/matchingStrategies/cosineSimilarity.js",
-    "./strategies/leven": "./dist/matchingStrategies/levenSimilarity.js",
-    "./strategies/deice": "./dist/matchingStrategies/diceSimilarity.js"
+    "./package.json": "./package.json",
+    ".": {
+      "import": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "require": {
+        "types": "./dist/commonjs/index.d.ts",
+        "default": "./dist/commonjs/index.js"
+      }
+    }
   },
   "devDependencies": {
     "@tsconfig/node16": "^1.0.3",
     "@types/string-similarity": "^4.0.0",
+    "tshy": "^1.7.0",
     "typedoc": "^0.23.28",
     "typescript": "^4.9.5"
   },
   "dependencies": {
     "leven": "^3.0.0",
     "string-similarity": "^4.0.4"
-  }
+  },
+  "tshy": {
+    "exports": {
+      "./package.json": "./package.json",
+      ".": "./src/index.js"
+    }
+  },
+  "type": "module"
 }

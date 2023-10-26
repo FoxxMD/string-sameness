@@ -1,7 +1,7 @@
-import {levenStrategy} from "./levenSimilarity";
-import {cosineStrategy} from "./cosineSimilarity";
-import {diceStrategy} from "./diceSimilarity";
-import {ComparisonStrategy, ComparisonStrategyResultValue, ComparisonStrategyResultObject, StrategyFunc} from '../atomic';
+import {levenStrategy} from "./levenSimilarity.js";
+import {cosineStrategy} from "./cosineSimilarity.js";
+import {diceStrategy} from "./diceSimilarity.js";
+import {ComparisonStrategy, ComparisonStrategyResultValue, ComparisonStrategyResultObject, StrategyFunc} from '../atomic.js';
 
 export {
     levenStrategy,

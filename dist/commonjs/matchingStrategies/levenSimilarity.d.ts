@@ -1,3 +1,3 @@
-import { ComparisonStrategy } from "../atomic";
+import { ComparisonStrategy } from "../atomic.js";
 export declare const calculateLevenSimilarity: (valA: string, valB: string) => number[];
 export declare const levenStrategy: ComparisonStrategy;

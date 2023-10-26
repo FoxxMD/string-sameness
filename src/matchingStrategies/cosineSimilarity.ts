@@ -1,7 +1,7 @@
 // reproduced from https://github.com/sumn2u/string-comparison/blob/master/jscosine.js
 // https://sumn2u.medium.com/string-similarity-comparision-in-js-with-examples-4bae35f13968
 
-import {ComparisonStrategy} from "../atomic";
+import {ComparisonStrategy} from "../atomic.js";
 
 interface StrMap {
     [key: string]: number
