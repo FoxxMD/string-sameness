@@ -49,12 +49,25 @@ describe('String normalization', function() {
 describe('Strategies', function() {
 
     describe('Sanity Checks', function() {
-        for(const [name, strat] of Object.entries(strategies)) {
-            it(`${name}: scores identical when strings are identical`, function() {
-                const res = strat.strategy(sameString, sameString);
-                assert.equal(100, res.score);
-            });
-        }
+
+        describe('scores identical when strings are identical', function() {
+            for(const [name, strat] of Object.entries(strategies)) {
+                it(`${name}: strings are identical`, function() {
+                    const res = strat.strategy(sameString, sameString);
+                    assert.equal(100, res.score);
+                });
+            }
+        });
+
+        describe('scores near zero when strings are completely different', function() {
+            for(const [name, strat] of Object.entries(strategies)) {
+                it(`${name}: string are completely different`, function() {
+                    const res = strat.strategy(sameString, 'pay bull blood for voice');
+                    assert.isAtMost(res.score, 10);
+                });
+            }
+        });
+
     });
 
 });
