@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.strDefaultTransforms = exports.defaultStrCompareTransformFuncs = exports.transforms = exports.strategies = exports.defaultStrategies = exports.createStringSameness = exports.stringSameness = void 0;
+exports.strDefaultTransforms = exports.defaultStrCompareTransformFuncs = exports.transforms = exports.strategies = exports.defaultStrategies = exports.createStringSameness = exports.stringSameness = exports.reorderStr = void 0;
 const index_js_1 = require("./matchingStrategies/index.js");
 const index_js_2 = require("./normalization/index.js");
 Object.defineProperty(exports, "strDefaultTransforms", { enumerable: true, get: function () { return index_js_2.strDefaultTransforms; } });
@@ -17,10 +17,16 @@ const defaultStrategies = [
 ];
 exports.defaultStrategies = defaultStrategies;
 const stringSameness = (valA, valB, options) => {
-    const { transforms = index_js_2.strDefaultTransforms, strategies = defaultStrategies, } = options || {};
+    const { transforms = index_js_2.strDefaultTransforms, strategies = defaultStrategies, reorder = false, } = options || {};
     const cleanA = transforms.reduce((acc, curr) => curr(acc), valA);
-    const cleanB = transforms.reduce((acc, curr) => curr(acc), valB);
+    let cleanB = transforms.reduce((acc, curr) => curr(acc), valB);
     const shortest = cleanA.length > cleanB.length ? cleanB : cleanA;
+    if (reorder) {
+        // we want to ignore order of tokens as much as possible (user does not care about differences in word order, just absolute differences in characters overall)
+        // so we will reorder cleanB so its tokens match the order or tokens in cleanA as closely as possible
+        // before we run strategies
+        cleanB = (0, exports.reorderStr)(cleanA, cleanB);
+    }
     const stratResults = [];
     for (const strat of strategies) {
         if (strat.isValid !== undefined && !strat.isValid(cleanA, cleanB)) {
@@ -54,6 +60,34 @@ const stringSameness = (valA, valB, options) => {
     };
 };
 exports.stringSameness = stringSameness;
+const reorderStr = (cleanA, cleanB, options) => {
+    // to do the reordering we will use stringSameness with the provided strats to match against each token in cleanA and choose the closest token in cleanB
+    // and add the end concat any remaining tokens from cleanB to the reordered string
+    const aTokens = cleanA.split(' ');
+    const bTokens = cleanB.split(' ');
+    const orderedCandidateTokens = aTokens.reduce((acc, curr) => {
+        let highScore = 0;
+        let highIndex = 0;
+        let index = 0;
+        for (const token of acc.remaining) {
+            const result = stringSameness(curr, token, { ...options, reorder: false });
+            if (result.highScore > highScore) {
+                highScore = result.highScore;
+                highIndex = index;
+            }
+            index++;
+        }
+        const splicedRemaining = [...acc.remaining];
+        if (highIndex <= splicedRemaining.length - 1) {
+            splicedRemaining.splice(highIndex, 1);
+        }
+        const ordered = highIndex <= acc.remaining.length - 1 ? acc.ordered.concat(acc.remaining[highIndex]) : acc.ordered;
+        return { ordered: ordered, remaining: splicedRemaining };
+    }, { ordered: [], remaining: bTokens });
+    const allOrderedCandidateTokens = orderedCandidateTokens.ordered.concat(orderedCandidateTokens.remaining);
+    return allOrderedCandidateTokens.join(' ');
+};
+exports.reorderStr = reorderStr;
 const createStringSameness = (defaults) => {
     return (valA, valB, options = {}) => stringSameness(valA, valB, { ...defaults, ...options });
 };

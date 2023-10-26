@@ -51,11 +51,13 @@ Pass a list of `ComparisonStrategy` objects using `{strategies: []}` to define w
 
 The average of the scores from all passed strategies is returned as `highScore` (and `highScoreWeighted`) from `stringSameness()`
 
-When no strategies are explicitly passed a default set of strategies is used, found in `@foxxmd/string-sameness/strategies`:
+When no strategies are explicitly passed a default set of strategies is used, found in `import {defaultStrategies} from @foxxmd/string-sameness;`:
 
 * [Dice's Coefficient](https://en.wikipedia.org/wiki/S%C3%B8rensen%E2%80%93Dice_coefficient) in [`diceSimilarities.ts`](/src/matchingStrategies/diceSimilarity.ts)
 * [Cosine Similarity](https://en.wikipedia.org/wiki/Cosine_similarity) in [`cosineSimilarities.ts`](/src/matchingStrategies/cosineSimilarity.ts)
 * [Levenshtein Distance](https://en.wikipedia.org/wiki/Levenshtein_distance) in [`levenSimilarities.ts`](/src/matchingStrategies/levenSimilarity.ts)
+
+Strategies can be accessed individually using `import {strategies} from @foxxmd/string-sameness`
 
 ### Bring Your Own Strategy
 
@@ -107,12 +109,14 @@ const result = stringSameness('This is one sentence', 'This is another sentence'
 
 Pass a list of functions using `{transforms: []}` to transform the strings before comparison. When not explicitly provided a default set of functions is applied to normalize the strings (to remove trivial differences):
 
+* normalize unicode EX convert Ö => O
 * convert to lowercase
 * trim (remove whitespace at beginning/end)
 * remove non-alphanumeric characters (punctuation and newlines)
 * replace any instances of 2 or more consecutive whitespace with 1 whitespace
 
-This default set of functions is exported as `defaultStrCompareTransformFuncs`.
+* The default set of transformer functions is exported as `import {strDefaultTransforms} from @foxxmd/string-sameness;`
+* All built-in transformers can be found at `import {transforms} from @foxxmd/string-sameness;`
 
 Example of supplying your own transform functions:
 
@@ -128,17 +132,42 @@ const myFuncs = [
 const result =  stringSameness('This is one sentence', 'This is another sentence', {transforms: myFuncs});
 ```
 
+## Token Re-ordering
+
+If tokens (word) ordering in the strings is not important you can choose to have string-sameness attempt to re-order all words before comparing sameness. This makes comparison scores much closer to "absolute sameness in all characters within string". EX:
+
+* `this is correct order`
+* `order correct this is`
+
+Scores 60 **without** reordering 
+
+Scores 100 **with** reordering
+
+Behavior caveats:
+
+* The **second** string argument is reordered to match the **first** string argument
+* If the second string is longer than the first than any non-matched words are concatenated to the end of the re-ordered string in the same order they were found
+
+To use:
+
+```js
+import {stringSameness} from '@foxxmd/string-sameness';
+
+const res = stringSameness(strA, strB, {reorder: true});
+```
+
 ## Factory
 
 For convenience, a factory function is also provided:
 
 ```ts
-import {createStringSameness} from "@foxxmd/string-sameness";
-import {levenStrategy} from "@foxxmd/string-sameness/strategies";
+import {createStringSameness, strategies} from "@foxxmd/string-sameness";
 import {myTransforms, myStrats} from './util';
 
+const {levenStrategy} = strategies;
+
 // sets the default object to used with the third argument for `stringSameness`
-const myCompare = createStringSameness({transforms: myTransforms, strategies: myStrats});
+const myCompare = createStringSameness({transforms: myTransforms, strategies: [levenStrategy, ...myStrats]});
 
 // uses myTransforms and myStrats
 const plainResult = myCompare('This is one sentence', 'This is another sentence');
