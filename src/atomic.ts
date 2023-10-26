@@ -1,6 +1,6 @@
 export interface StringComparisonOptions {
     transforms?: ((str: string) => string)[]
-    strategies?: ComparisonStrategy[]
+    strategies?: ComparisonStrategy<ComparisonStrategyResultValue>[]
 }
 
 export interface StringSamenessResult {
@@ -35,9 +35,9 @@ export interface NamedComparisonStrategyObjectResult extends ComparisonStrategyR
 
 export type ComparisonStrategyResultValue = number | ComparisonStrategyResultObject;
 
-export type StrategyFunc = (strA: string, strB: string) => ComparisonStrategyResultValue;
+export type StrategyFunc<T extends ComparisonStrategyResultValue> = (strA: string, strB: string) => T;
 
-export interface ComparisonStrategy {
+export interface ComparisonStrategy<T extends ComparisonStrategyResultValue> {
     /**
      * The name of this strategy
      * */
@@ -45,7 +45,7 @@ export interface ComparisonStrategy {
     /**
      * A function that accepts two string arguments and returns a number
      * */
-    strategy: StrategyFunc
+    strategy: StrategyFunc<T>
 
     /**
      * An optional function that accepts two string arguments and returns whether this strategy should be used

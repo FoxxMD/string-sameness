@@ -1,5 +1,5 @@
 import leven from "leven";
-import {ComparisonStrategy} from "../atomic.js";
+import {ComparisonStrategy, ComparisonStrategyResultObject} from "../atomic.js";
 
 export const calculateLevenSimilarity = (valA: string, valB: string) => {
     let longer: string;
@@ -26,7 +26,7 @@ const stratFunc = (valA: string, valB: string) => {
     };
 }
 
-export const levenStrategy: ComparisonStrategy = {
+export const levenStrategy: ComparisonStrategy<ComparisonStrategyResultObject> = {
     name: 'leven',
     strategy: stratFunc
 }

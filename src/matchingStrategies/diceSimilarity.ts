@@ -1,8 +1,8 @@
 import stringSimilarity from 'string-similarity';
-import {ComparisonStrategy} from "../atomic.js";
+import {ComparisonStrategy, ComparisonStrategyResultObject} from "../atomic.js";
 
 export const calculateDiceSimilarity = (valA: string, valB: string) => stringSimilarity.compareTwoStrings(valA, valB);
-export const diceStrategy: ComparisonStrategy = {
+export const diceStrategy: ComparisonStrategy<ComparisonStrategyResultObject> = {
     name: 'dice',
     strategy: (valA: string, valB: string) => {
         const res = calculateDiceSimilarity(valA, valB);

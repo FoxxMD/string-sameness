@@ -1,3 +1,3 @@
-import { ComparisonStrategy } from "../atomic.js";
+import { ComparisonStrategy, ComparisonStrategyResultObject } from "../atomic.js";
 export declare const calculateCosineSimilarity: (strA: string, strB: string) => number;
-export declare const cosineStrategy: ComparisonStrategy;
+export declare const cosineStrategy: ComparisonStrategy<ComparisonStrategyResultObject>;

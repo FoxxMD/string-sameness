@@ -1,7 +1,7 @@
 // reproduced from https://github.com/sumn2u/string-comparison/blob/master/jscosine.js
 // https://sumn2u.medium.com/string-similarity-comparision-in-js-with-examples-4bae35f13968
 
-import {ComparisonStrategy} from "../atomic.js";
+import {ComparisonStrategy, ComparisonStrategyResultObject} from "../atomic.js";
 
 interface StrMap {
     [key: string]: number
@@ -69,7 +69,7 @@ export const calculateCosineSimilarity = (strA: string, strB: string) => {
     return cosineSimilarity(termFreqVecA, termFreqVecB);
 }
 
-export const cosineStrategy: ComparisonStrategy = {
+export const cosineStrategy: ComparisonStrategy<ComparisonStrategyResultObject> = {
     name: 'cosine',
     strategy: (valA: string, valB: string) => {
         const res = calculateCosineSimilarity(valA, valB);
