@@ -1,4 +1,4 @@
-import {cosineStrategy, levenStrategy, diceStrategy} from "./matchingStrategies/index.js";
+import {cosineStrategy, levenStrategy, diceStrategy, cosineStrategyAggressive} from "./matchingStrategies/index.js";
 import {
     ComparisonStrategyResult,
     NamedComparisonStrategyObjectResult,
@@ -84,7 +84,8 @@ const createStringSameness = (defaults: StringComparisonOptions) => {
 const strategies = {
     diceStrategy,
     levenStrategy,
-    cosineStrategy
+    cosineStrategy,
+    cosineStrategyAggressive
 };
 
 export {
@@ -94,5 +95,6 @@ export {
     createStringSameness,
     defaultStrategies,
     strategies,
-    defaultStrCompareTransformFuncs
+    defaultStrCompareTransformFuncs,
+    ComparisonStrategyResult
 }
