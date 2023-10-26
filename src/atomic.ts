@@ -1,6 +1,18 @@
 export interface StringComparisonOptions {
+    /**
+     * An array of transformations to apply to each string before comparing similarity
+     * */
     transforms?: StringTransformFunc[]
+    /**
+     * An array of strategies used to score similarity. All strategies scores are combined for an average high score.
+     * */
     strategies?: ComparisonStrategy<ComparisonStrategyResultValue>[]
+    /**
+     * Reorder second string so its token match order of first string as closely as possible
+     *
+     * Useful when only the differences in content are important, but not the order of the content
+     * */
+    reorder?: boolean
 }
 
 export interface StringSamenessResult {
