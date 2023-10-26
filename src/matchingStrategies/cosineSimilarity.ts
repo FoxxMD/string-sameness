@@ -72,7 +72,10 @@ export const calculateCosineSimilarity = (strA: string, strB: string) => {
 export const cosineStrategy: ComparisonStrategy<ComparisonStrategyResultObject> = {
     name: 'cosine',
     strategy: (valA: string, valB: string) => {
-        const res = calculateCosineSimilarity(valA, valB);
+        let res = calculateCosineSimilarity(valA, valB);
+        if(res > 0.99999) {
+            res = 1;
+        }
         return {
             score: res * 100,
             rawScore: res
