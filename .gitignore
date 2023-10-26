@@ -1,6 +1,9 @@
 **/src/**/*.map
 **/src/**/*.js
 **/src/**/*.d.ts
+**/tests/**/*.map
+**/tests/**/*.js
+**/tests/**/*.d.ts
 node_modules/
 /.idea
 /docs
