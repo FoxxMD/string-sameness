@@ -11,16 +11,18 @@ const defaultStrategies = [
     cosineStrategy
 ];
 const stringSameness = (valA, valB, options) => {
-    const { transforms = strDefaultTransforms, strategies = defaultStrategies, reorder = false, } = options || {};
-    const cleanA = transforms.reduce((acc, curr) => curr(acc), valA);
+    const { transforms = strDefaultTransforms, strategies = defaultStrategies, reorder = false, delimiter = ' ' } = options || {};
+    let cleanA = transforms.reduce((acc, curr) => curr(acc), valA);
     let cleanB = transforms.reduce((acc, curr) => curr(acc), valB);
-    const shortest = cleanA.length > cleanB.length ? cleanB : cleanA;
     if (reorder) {
         // we want to ignore order of tokens as much as possible (user does not care about differences in word order, just absolute differences in characters overall)
-        // so we will reorder cleanB so its tokens match the order or tokens in cleanA as closely as possible
+        // so we will reorder the shorter of the two strings so its tokens match the order of tokens in the longer string as closely as possible
         // before we run strategies
-        cleanB = reorderStr(cleanA, cleanB);
+        const [orderedX, orderedY] = reorderStr(cleanA, cleanB);
+        cleanA = orderedX;
+        cleanB = orderedY;
     }
+    const shortest = cleanA.length > cleanB.length ? cleanB : cleanA;
     const stratResults = [];
     for (const strat of strategies) {
         if (strat.isValid !== undefined && !strat.isValid(cleanA, cleanB)) {
@@ -53,32 +55,58 @@ const stringSameness = (valA, valB, options) => {
         highScoreWeighted,
     };
 };
-export const reorderStr = (cleanA, cleanB, options) => {
-    // to do the reordering we will use stringSameness with the provided strats to match against each token in cleanA and choose the closest token in cleanB
-    // and add the end concat any remaining tokens from cleanB to the reordered string
-    const aTokens = cleanA.split(' ');
-    const bTokens = cleanB.split(' ');
-    const orderedCandidateTokens = aTokens.reduce((acc, curr) => {
+export const reorderStr = (strA, strB, options) => {
+    const { transforms = strDefaultTransforms, strategies = defaultStrategies, delimiter = ' ' } = options || {};
+    const cleanA = transforms.reduce((acc, curr) => curr(acc), strA);
+    const cleanB = transforms.reduce((acc, curr) => curr(acc), strB);
+    // split by "token"
+    const eTokens = cleanA.split(delimiter);
+    const cTokens = cleanB.split(delimiter);
+    let longerTokens, shorterTokens;
+    if (eTokens.length > cTokens.length) {
+        longerTokens = eTokens;
+        shorterTokens = cTokens;
+    }
+    else {
+        longerTokens = cTokens;
+        shorterTokens = eTokens;
+    }
+    // we will use longest string (token list) as the reducer and order the shorter list to match it
+    // so we don't have to deal with undefined positions in the shorter list
+    const orderedCandidateTokens = longerTokens.reduce((acc, curr) => {
+        // if we've run out of tokens in the shorter list just return
+        if (acc.remaining.length === 0) {
+            return acc;
+        }
+        // on each iteration of tokens in the long list
+        // we iterate through remaining tokens from the shorter list and find the token with the most sameness
         let highScore = 0;
         let highIndex = 0;
         let index = 0;
         for (const token of acc.remaining) {
-            const result = stringSameness(curr, token, { ...options, reorder: false });
-            if (result.highScore > highScore) {
-                highScore = result.highScore;
+            const result = stringSameness(curr, token, { strategies });
+            if (result.highScoreWeighted > highScore) {
+                highScore = result.highScoreWeighted;
                 highIndex = index;
             }
             index++;
         }
+        // then remove the most same token from the remaining short list tokens
         const splicedRemaining = [...acc.remaining];
-        if (highIndex <= splicedRemaining.length - 1) {
-            splicedRemaining.splice(highIndex, 1);
-        }
-        const ordered = highIndex <= acc.remaining.length - 1 ? acc.ordered.concat(acc.remaining[highIndex]) : acc.ordered;
-        return { ordered: ordered, remaining: splicedRemaining };
-    }, { ordered: [], remaining: bTokens });
-    const allOrderedCandidateTokens = orderedCandidateTokens.ordered.concat(orderedCandidateTokens.remaining);
-    return allOrderedCandidateTokens.join(' ');
+        splicedRemaining.splice(highIndex, 1);
+        return {
+            // finally add the most same token to the ordered short list
+            ordered: acc.ordered.concat(acc.remaining[highIndex]),
+            // and return the remaining short list tokens
+            remaining: splicedRemaining
+        };
+    }, {
+        // "ordered" is the result of ordering tokens in the shorter list to match longer token order
+        ordered: [],
+        // remaining is the initial shorter list
+        remaining: shorterTokens
+    });
+    return [longerTokens.join(' '), orderedCandidateTokens.ordered.join(' ')];
 };
 const createStringSameness = (defaults) => {
     return (valA, valB, options = {}) => stringSameness(valA, valB, { ...defaults, ...options });

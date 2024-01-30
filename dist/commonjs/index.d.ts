@@ -2,7 +2,7 @@ import { ComparisonStrategyResult, StringComparisonOptions, StringSamenessResult
 import { strDefaultTransforms, transforms } from "./normalization/index.js";
 declare const defaultStrategies: import("./atomic.js").ComparisonStrategy<import("./atomic.js").ComparisonStrategyResultObject>[];
 declare const stringSameness: (valA: string, valB: string, options?: StringComparisonOptions) => StringSamenessResult;
-export declare const reorderStr: (cleanA: string, cleanB: string, options?: StringComparisonOptions) => string;
+export declare const reorderStr: (strA: string, strB: string, options?: StringComparisonOptions) => [string, string];
 declare const createStringSameness: (defaults: StringComparisonOptions) => (valA: string, valB: string, options?: StringComparisonOptions) => StringSamenessResult;
 declare const strategies: {
     diceStrategy: import("./atomic.js").ComparisonStrategy<import("./atomic.js").ComparisonStrategyResultObject>;
