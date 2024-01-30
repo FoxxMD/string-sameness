@@ -103,7 +103,8 @@ describe('String reordering', () => {
         ]
 
         for(const test of exact) {
-            assert.equal(reorderStr(test[0], test[1]), test[0])
+            const res = reorderStr(test[0], test[1]);
+            assert.equal(res[1], test[1])
         }
     });
 
@@ -111,15 +112,19 @@ describe('String reordering', () => {
 
         const a = 'this is correct order';
         const b = 'order correct this is and extra';
-        const expected = 'this is correct order and extra'
+        const expected = 'order correct this is'
 
-        assert.equal(reorderStr(a, b), expected);
+        const res = reorderStr(a, b);
+
+        assert.equal(res[1], expected);
 
         const aLong = 'this vorrect order with more tokens';
         const bLong = 'order correct this extra';
         const expectedLong = 'this correct order extra';
 
-        assert.equal(reorderStr(aLong, bLong), expectedLong);
+        const res2 = reorderStr(aLong, bLong);
+
+        assert.equal(res2[1], expectedLong);
 
     });
 

@@ -13,6 +13,15 @@ export interface StringComparisonOptions {
      * Useful when only the differences in content are important, but not the order of the content
      * */
     reorder?: boolean
+
+    /**
+     * When `reorder` is used this determines how to split each string into the tokens that will be reordered.
+     *
+     * The value of this property is used in String.split() -- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/split#separator
+     *
+     * @default " "
+     * */
+    delimiter?: string | RegExp
 }
 
 export interface StringSamenessResult {
