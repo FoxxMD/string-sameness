@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "nodenext",
+    "module": "ESNext",
     "moduleResolution": "nodenext",
     "target": "es2022",
     "declaration": true,

@@ -1,6 +1,7 @@
 {
   "name": "@foxxmd/string-sameness",
-  "version": "0.3.0",
+  "type": "module",
+  "version": "0.4.0",
   "description": "determine how closely the same two strings are",
   "repository": "https://github.com/foxxmd/string-sameness",
   "author": "FoxxMD",
@@ -10,8 +11,6 @@
     "node": ">=18.0.0",
     "npm": ">=9.3.0"
   },
-  "main": "./dist/commonjs/index.js",
-  "types": "./dist/commonjs/index.d.ts",
   "files": [
     "dist"
   ],
@@ -27,10 +26,6 @@
       "import": {
         "types": "./dist/esm/index.d.ts",
         "default": "./dist/esm/index.js"
-      },
-      "require": {
-        "types": "./dist/commonjs/index.d.ts",
-        "default": "./dist/commonjs/index.js"
       }
     }
   },
@@ -56,7 +51,9 @@
     "exports": {
       "./package.json": "./package.json",
       ".": "./src/index.js"
-    }
-  },
-  "type": "module"
+    },
+    "dialects": [
+      "esm"
+    ]
+  }
 }
