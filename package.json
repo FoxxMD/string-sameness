@@ -49,8 +49,8 @@
     "typescript": "^4.9.5"
   },
   "dependencies": {
-    "leven": "^3.0.0",
-    "string-similarity": "^4.0.4"
+    "dice-coefficient": "^2.1.1",
+    "leven": "^3.0.0"
   },
   "tshy": {
     "exports": {

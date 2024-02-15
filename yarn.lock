@@ -298,6 +298,13 @@ deep-eql@^4.1.3:
   dependencies:
     type-detect "^4.0.0"
 
+dice-coefficient@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/dice-coefficient/-/dice-coefficient-2.1.1.tgz#d8ebb51f021ab6069994e7ef36842184771f616f"
+  integrity sha512-vPTcHmOQAuGvU6eyBtj7QCBwDJh2I7QpbBU51lbgfv7592KjBl6dm0baRBSh9ekt2X91MNAz7OpJrXCIUtDzlw==
+  dependencies:
+    n-gram "^2.0.0"
+
 diff@5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/diff/-/diff-5.0.0.tgz#7ed6ad76d859d030787ec35855f5b1daf31d852b"
@@ -631,6 +638,11 @@ ms@2.1.3:
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.3.tgz#574c8138ce1d2b5861f0b44579dbadd60c6615b2"
   integrity sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==
 
+n-gram@^2.0.0:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/n-gram/-/n-gram-2.0.2.tgz#e544a7dffefc49c22d898b2f491e787941b3a2ba"
+  integrity sha512-S24aGsn+HLBxUGVAUFOwGpKs7LBcG4RudKU//eWzt/mQ97/NMKQxDWHyHx63UNWk/OOdihgmzoETn1tf5nQDzQ==
+
 nanoid@3.3.3:
   version "3.3.3"
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.3.tgz#fd8e8b7aa761fe807dba2d1b98fb7241bb724a25"
@@ -780,11 +792,6 @@ source-map@^0.6.0:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.6.1.tgz#74722af32e9614e9c287a8d0bbde48b5e2f1a263"
   integrity sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g==
-
-string-similarity@^4.0.4:
-  version "4.0.4"
-  resolved "https://registry.yarnpkg.com/string-similarity/-/string-similarity-4.0.4.tgz#42d01ab0b34660ea8a018da8f56a3309bb8b2a5b"
-  integrity sha512-/q/8Q4Bl4ZKAPjj8WerIBJWALKkaPRfrvhfF8k/B23i4nzrlRj2/go1m90In7nG/3XDSbOo0+pu6RvCTM9RGMQ==
 
 "string-width-cjs@npm:string-width@^4.2.0", string-width@^4.1.0, string-width@^4.2.0:
   version "4.2.3"

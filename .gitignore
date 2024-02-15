@@ -8,3 +8,4 @@ node_modules/
 /.idea
 /docs
 .tshy
+.tshy-build-tmp
