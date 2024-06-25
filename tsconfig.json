@@ -1,23 +1,24 @@
 {
   "compilerOptions": {
-    "module": "ESNext",
-    "moduleResolution": "nodenext",
-    "target": "es2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "target": "ESNext",
     "declaration": true,
-    "strict": true,
+    "strict": false,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "sourceMap": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "allowSyntheticDefaultImports": true,
+    "isolatedModules": true,
+    "noEmit": true
   },
   "ts-node": {
     "esm": true
   },
-  "typeRoots": [
-    "./src/types.d.ts"
-  ],
   "include": [
-      "src/**/*"
+      "src/**/*",
+    "tests/**/*.ts"
   ],
   "exclude": [
     "node_modules"

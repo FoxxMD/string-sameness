@@ -1,7 +1,7 @@
 {
   "name": "@foxxmd/string-sameness",
   "type": "module",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "determine how closely the same two strings are",
   "repository": "https://github.com/foxxmd/string-sameness",
   "author": "FoxxMD",
@@ -15,39 +15,30 @@
     "dist"
   ],
   "scripts": {
-    "typedoc": "typedoc",
+    "typedoc": "typedoc --plugin @8hobbies/typedoc-plugin-plausible",
     "build": "tsc",
     "prepare": "tshy",
     "test": "mocha --recursive ./tests/*.test.ts"
   },
-  "exports": {
-    "./package.json": "./package.json",
-    ".": {
-      "import": {
-        "types": "./dist/esm/index.d.ts",
-        "default": "./dist/esm/index.js"
-      }
-    }
-  },
   "devDependencies": {
-    "@tsconfig/node16": "^1.0.3",
+    "@tsconfig/node18": "^1.0.1",
     "@types/chai": "^4.3.0",
     "@types/mocha": "^9.1.0",
     "@types/string-similarity": "^4.0.0",
     "chai": "^4.3.6",
     "mocha": "^10.2.0",
-    "source-map-support": "^0.5.21",
-    "ts-node": "^10.9.1",
-    "tsconfig-paths": "^4.2.0",
     "tshy": "^1.7.0",
-    "typedoc": "^0.23.28",
-    "typescript": "^4.9.5"
+    "tsx": "^4.7.1",
+    "typedoc": "^0.26.2",
+    "typescript": "^5.3.3"
   },
   "dependencies": {
+    "@8hobbies/typedoc-plugin-plausible": "^2.0.0",
     "dice-coefficient": "^2.1.1",
     "leven": "^3.0.0"
   },
   "tshy": {
+    "project": "./tsconfig.build.json",
     "exports": {
       "./package.json": "./package.json",
       ".": "./src/index.js"
@@ -55,5 +46,15 @@
     "dialects": [
       "esm"
     ]
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": {
+        "source": "./src/index.js",
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      }
+    }
   }
 }

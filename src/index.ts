@@ -165,8 +165,6 @@ const strategies = {
 const defaultStrCompareTransformFuncs = strDefaultTransforms;
 
 export {
-    StringSamenessResult,
-    StringComparisonOptions,
     stringSameness,
     createStringSameness,
     defaultStrategies,
@@ -174,6 +172,11 @@ export {
     transforms,
     defaultStrCompareTransformFuncs,
     strDefaultTransforms,
+}
+
+export type {
+    StringSamenessResult,
+    StringComparisonOptions,
     ComparisonStrategyResult,
     StringTransformFunc
 }

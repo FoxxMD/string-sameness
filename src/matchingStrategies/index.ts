@@ -8,6 +8,9 @@ export {
     cosineStrategy,
     cosineStrategyAggressive,
     diceStrategy,
+}
+
+export type {
     ComparisonStrategy,
     ComparisonStrategyResultObject,
     ComparisonStrategyResultValue,
